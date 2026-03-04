@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find ~/Downloads/\"ottp-v2 \\(old2\\)\"/src -type f | sort)",
+      "Bash(find \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/src\" -type f | sort)",
+      "Bash(cat \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/supabase/migrations/\"*.sql 2>/dev/null || ls \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/supabase/\")",
+      "Bash(cp -a \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/src\" /Users/nathan/Downloads/ottp-v2/ && cp -a \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/supabase\" /Users/nathan/Downloads/ottp-v2/ && cp -a \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/public\" /Users/nathan/Downloads/ottp-v2/ && cp \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/package.json\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/package-lock.json\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/tsconfig.json\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/next.config.ts\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/postcss.config.mjs\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/eslint.config.mjs\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/components.json\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/.env.example\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/.env.local\" \"/Users/nathan/Downloads/ottp-v2 \\(old2\\)/.gitignore\" /Users/nathan/Downloads/ottp-v2/)",
+      "Bash(npm install 2>&1 | tail -5)",
+      "Bash(npm install --legacy-peer-deps 2>&1 | tail -10)",
+      "Bash(npx next build 2>&1)",
+      "Bash(git init && git add -A && git status)",
+      "Bash(for f in \\\\\n  \"src/lib/eas/contracts.ts\" \\\\\n  \"src/lib/eas/encode.ts\" \\\\\n  \"src/lib/eas/operations.ts\" \\\\\n  \"src/lib/eas/config.ts\" \\\\\n  \"src/lib/eas/index.ts\" \\\\\n  \"src/app/setup/page.tsx\" \\\\\n  \"src/app/api/farcaster/route.ts\" \\\\\n  \"src/components/publish-button.tsx\" \\\\\n  \"src/components/attest-button.tsx\" \\\\\n  \"src/components/farcaster-verify.tsx\" \\\\\n  \"src/lib/identity.ts\" \\\\\n  \"src/contexts/ottp-context.tsx\" \\\\\n  \".env.local\" \\\\\n  \".npmrc\" \\\\\n  \"tsconfig.json\"; do\n  if [ -f \"$f\" ]; then echo \"EXISTS: $f\"; else echo \"MISSING: $f\"; fi\ndone)",
+      "Bash(npm run build 2>&1)",
+      "Bash(gh auth status 2>&1)",
+      "Bash(which brew 2>&1 && brew install gh 2>&1 | tail -5)",
+      "Bash(which git && git --version)",
+      "Bash(git rm --cached src/components/register-prompt.tsx 2>/dev/null; git add .npmrc README.md src/app/api/farcaster/route.ts src/components/farcaster-verify.tsx src/lib/identity.ts src/app/page.tsx src/app/o/[id]/page.tsx src/app/s/[id]/page.tsx src/components/dashboard.tsx src/components/header.tsx src/components/object-card.tsx src/contexts/ottp-context.tsx .env.example .claude/settings.local.json)",
+      "Bash(git add .npmrc README.md \"src/app/api/farcaster/route.ts\" src/components/farcaster-verify.tsx src/lib/identity.ts src/app/page.tsx \"src/app/o/[id]/page.tsx\" \"src/app/s/[id]/page.tsx\" src/components/dashboard.tsx src/components/header.tsx src/components/object-card.tsx src/contexts/ottp-context.tsx .env.example .claude/settings.local.json)",
+      "Bash(git add .npmrc README.md .gitignore .env.example \"src/app/api/farcaster/route.ts\" src/components/farcaster-verify.tsx src/lib/identity.ts src/app/page.tsx \"src/app/o/[id]/page.tsx\" \"src/app/s/[id]/page.tsx\" src/components/dashboard.tsx src/components/header.tsx src/components/object-card.tsx src/contexts/ottp-context.tsx .claude/settings.local.json && git status)"
+    ]
+  }
+}
