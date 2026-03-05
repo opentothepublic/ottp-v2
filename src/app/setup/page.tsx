@@ -108,7 +108,7 @@ export default function SetupPage() {
                   <Badge variant="verified">registered</Badge>
                 )}
               </div>
-              <code className="text-xs text-zinc-500 block">
+              <code className="text-xs text-zinc-500 block break-all">
                 {schema.schema}
               </code>
               {uids[name] && (

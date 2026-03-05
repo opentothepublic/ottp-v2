@@ -69,7 +69,7 @@ export function AttestButton({
   }
 
   return (
-    <div className="p-3 rounded-lg border border-zinc-700 bg-zinc-900/50 space-y-2">
+    <div className="p-3 rounded-lg border border-zinc-700 bg-zinc-900/50 space-y-2 w-full">
       <p className="text-xs text-zinc-400">
         Create an attestation link to this object. The owner will be notified
         and can verify your attestation, creating a 2-way link.

@@ -41,10 +41,10 @@ export function ObjectCard({ object }: { object: OttpObjectWithOwner }) {
           )}
         </div>
       </div>
-      <div className="flex items-center gap-2 mt-3 text-xs text-zinc-600">
-        <span>{object.owner ? getDisplayName(object.owner) : ""}</span>
-        <span>·</span>
-        <span>{timeAgo(object.created_at)}</span>
+      <div className="flex items-center gap-2 mt-3 text-xs text-zinc-600 min-w-0">
+        <span className="truncate">{object.owner ? getDisplayName(object.owner) : ""}</span>
+        <span className="shrink-0">·</span>
+        <span className="shrink-0">{timeAgo(object.created_at)}</span>
       </div>
     </Link>
   );

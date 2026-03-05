@@ -25,6 +25,25 @@ import {
 import { supabase } from "@/lib/supabase";
 import type { Subject, OttpObject, Block, Link } from "@/types/database";
 
+// Retry helper: retries up to `maxRetries` on failure with exponential backoff
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  maxRetries = 3
+): Promise<T> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (attempt < maxRetries - 1) {
+        await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
+      }
+    }
+  }
+  throw lastError;
+}
+
 // ============================================
 // SCHEMA REGISTRATION
 // ============================================
@@ -345,12 +364,8 @@ export async function batchPublishAll(
     if (!subject) throw new Error("Subject not found");
 
     if (!subject.onchain_uid) {
-      const { uid } = await publishSubject(
-        walletClient,
-        publicClient,
-        subject,
-        schemaUids.subject,
-        chain
+      const { uid } = await withRetry(() =>
+        publishSubject(walletClient, publicClient, subject, schemaUids.subject, chain)
       );
       subject.onchain_uid = `${chain}:${uid}`;
       result.subjects = 1;
@@ -377,14 +392,8 @@ export async function batchPublishAll(
           parentUid = parent?.onchain_uid ?? null;
         }
 
-        const { uid } = await publishObject(
-          walletClient,
-          publicClient,
-          obj,
-          schemaUids.object,
-          subject.onchain_uid,
-          parentUid,
-          chain
+        const { uid } = await withRetry(() =>
+          publishObject(walletClient, publicClient, obj, schemaUids.object, subject.onchain_uid, parentUid, chain)
         );
         obj.onchain_uid = `${chain}:${uid}`;
         result.objects++;
@@ -422,14 +431,8 @@ export async function batchPublishAll(
           targetUid = tgt?.onchain_uid ?? null;
         }
 
-        await publishLink(
-          walletClient,
-          publicClient,
-          link,
-          schemaUids.link,
-          sourceUid,
-          targetUid,
-          chain
+        await withRetry(() =>
+          publishLink(walletClient, publicClient, link, schemaUids.link, sourceUid, targetUid, chain)
         );
         result.links++;
       }

@@ -135,20 +135,20 @@ export default function ObjectPage() {
   return (
     <div>
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-zinc-500 mb-3">
-        <Link href="/" className="hover:text-zinc-300">
+      <nav className="flex items-center gap-1.5 text-xs text-zinc-500 mb-3 overflow-hidden">
+        <Link href="/" className="hover:text-zinc-300 shrink-0">
           Dashboard
         </Link>
         {ancestors.map((a) => (
-          <span key={a.id} className="flex items-center gap-1.5">
-            <span>&gt;</span>
-            <Link href={`/o/${a.id}`} className="hover:text-zinc-300">
+          <span key={a.id} className="flex items-center gap-1.5 min-w-0">
+            <span className="shrink-0">&gt;</span>
+            <Link href={`/o/${a.id}`} className="hover:text-zinc-300 truncate">
               {getTitle(a)}
             </Link>
           </span>
         ))}
-        <span>&gt;</span>
-        <span className="text-zinc-400">{getTitle(object)}</span>
+        <span className="shrink-0">&gt;</span>
+        <span className="text-zinc-400 truncate">{getTitle(object)}</span>
       </nav>
 
       {/* Back button */}
@@ -173,7 +173,7 @@ export default function ObjectPage() {
             </a>
           )}
         </div>
-        <h1 className="text-xl font-semibold text-zinc-100">
+        <h1 className="text-xl font-semibold text-zinc-100 break-words">
           {getTitle(object)}
         </h1>
         {getDescription(object) && (
@@ -194,7 +194,7 @@ export default function ObjectPage() {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8">
         {identity === IDENTITY.PROJECT && (
           <>
             <Link href={`/new?type=${IDENTITY.SCOPE}&parent=${object.id}`}>
@@ -317,18 +317,18 @@ export default function ObjectPage() {
               return (
                 <div
                   key={link.id}
-                  className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/50 flex items-center justify-between"
+                  className="p-3 rounded-lg border border-zinc-800 bg-zinc-900/50 flex items-center justify-between gap-2"
                 >
-                  <div>
+                  <div className="min-w-0">
                     {src?.object ? (
                       <Link
                         href={`/o/${src.object.id}`}
-                        className="text-sm text-zinc-200 hover:text-white"
+                        className="text-sm text-zinc-200 hover:text-white block truncate"
                       >
                         {srcTitle}
                       </Link>
                     ) : (
-                      <span className="text-sm text-zinc-200">
+                      <span className="text-sm text-zinc-200 block truncate">
                         {srcTitle}
                       </span>
                     )}

@@ -232,12 +232,12 @@ export default function ActivityPage() {
           {sortedEntries.map((entry) => (
             <div
               key={entry.id}
-              className="flex items-center justify-between py-2.5 border-b border-zinc-800/50"
+              className="flex items-start justify-between gap-2 py-2.5 border-b border-zinc-800/50"
             >
-              <span className="text-sm">
+              <span className="text-sm min-w-0 break-words">
                 {renderEntry(entry)}
               </span>
-              <span className="text-xs text-zinc-600 shrink-0 ml-4">
+              <span className="text-xs text-zinc-600 shrink-0 mt-0.5">
                 {timeAgo(entry.created_at)}
               </span>
             </div>

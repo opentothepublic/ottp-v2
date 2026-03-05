@@ -36,3 +36,11 @@ export function hasFarcaster(subject: Subject): boolean {
   const fc = subject.metadata?.farcaster as FarcasterProfile | undefined;
   return !!fc?.fid;
 }
+
+/**
+ * Get Farcaster username if verified, or null.
+ */
+export function getFarcasterUsername(subject: Subject): string | null {
+  const fc = subject.metadata?.farcaster as FarcasterProfile | undefined;
+  return fc?.username ?? null;
+}

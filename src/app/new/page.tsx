@@ -190,7 +190,7 @@ function NewObjectForm() {
     <div className="max-w-lg mx-auto">
       <h1 className="text-lg font-semibold text-zinc-100 mb-6">Create</h1>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {objectTypes.map((t) => (
           <button
             key={t.identity}
@@ -240,7 +240,7 @@ function NewObjectForm() {
                   key={p.id}
                   type="button"
                   onClick={() => handleProjectSelect(p.id)}
-                  className={`text-left p-2 rounded-md border text-sm transition-colors ${
+                  className={`text-left p-2 rounded-md border text-sm transition-colors truncate ${
                     activeProjectId === p.id
                       ? "border-zinc-400 bg-zinc-800 text-zinc-100"
                       : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-600"

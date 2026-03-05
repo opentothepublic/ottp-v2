@@ -51,8 +51,8 @@ export default function SubjectPage() {
           {identity && <Badge variant="muted">{identity.split(".").pop()}</Badge>}
           {subject.onchain_uid && <Badge variant="verified">onchain</Badge>}
         </div>
-        <h1 className="text-xl font-semibold text-zinc-100">{getDisplayName(subject)}</h1>
-        <p className="text-xs text-zinc-600 mt-1">
+        <h1 className="text-xl font-semibold text-zinc-100 break-words">{getDisplayName(subject)}</h1>
+        <p className="text-xs text-zinc-600 mt-1 truncate">
           {shortenAddress(subject.wallet_address)} · joined{" "}
           {timeAgo(subject.created_at)}
         </p>

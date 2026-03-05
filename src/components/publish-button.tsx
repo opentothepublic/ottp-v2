@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useEas } from "@/hooks/use-eas";
 import { useOttp } from "@/contexts/ottp-context";
 import {
@@ -19,10 +19,14 @@ export function PublishButton() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<BatchPublishResult | null>(null);
 
-  useEffect(() => {
+  const refreshCounts = useCallback(() => {
     if (!subject) return;
     getUnpublishedCounts(subject.id).then(setCounts);
-  }, [subject, result]);
+  }, [subject]);
+
+  useEffect(() => {
+    refreshCounts();
+  }, [refreshCounts]);
 
   if (!schemasReady() || counts.total === 0) return null;
 
@@ -46,6 +50,8 @@ export function PublishButton() {
         "base"
       );
       setResult(res);
+      // Refresh counts so card disappears if everything is published
+      refreshCounts();
     } catch (err) {
       setResult({
         subjects: 0,
@@ -60,12 +66,12 @@ export function PublishButton() {
 
   return (
     <div className="p-4 rounded-lg border border-zinc-700 bg-zinc-900/50 mb-6">
-      <div className="flex items-center justify-between">
-        <div>
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
           <h3 className="text-sm font-medium text-zinc-200">
             Publish to Base
           </h3>
-          <p className="text-xs text-zinc-500 mt-1">
+          <p className="text-xs text-zinc-500 mt-1 truncate">
             {counts.total} unpublished item{counts.total === 1 ? "" : "s"}
             {counts.subjects > 0 && ` · ${counts.subjects} subject`}
             {counts.objects > 0 && ` · ${counts.objects} object${counts.objects === 1 ? "" : "s"}`}
@@ -76,6 +82,7 @@ export function PublishButton() {
           onClick={handlePublish}
           disabled={loading || !walletClient}
           size="sm"
+          className="shrink-0"
         >
           {loading ? "Publishing..." : "Publish All"}
         </Button>
