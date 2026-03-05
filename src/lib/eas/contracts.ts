@@ -188,6 +188,17 @@ export const EAS_ABI: Abi = [
     ],
     outputs: [],
   },
+  // Attested event
+  {
+    name: "Attested",
+    type: "event",
+    inputs: [
+      { name: "recipient", type: "address", indexed: true },
+      { name: "attester", type: "address", indexed: true },
+      { name: "uid", type: "bytes32", indexed: false },
+      { name: "schemaUid", type: "bytes32", indexed: true },
+    ],
+  },
   // Get attestation
   {
     name: "getAttestation",

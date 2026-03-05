@@ -133,25 +133,18 @@ export async function createBatchAttestations(
 // WAIT FOR ATTESTATION UID FROM TX RECEIPT
 // ============================================
 
-// The EAS contract emits an Attested event with the UID.
-// We parse the logs to extract it.
-const ATTESTED_EVENT_SIG =
-  "0x8bf46bf4cfd674fa735a3d63ec1c9ad4153f033c290341f3a588b75c68f3c78e";
+// The EAS contract emits: event Attested(address indexed recipient, address indexed attester, bytes32 uid, bytes32 indexed schemaUid)
+// We use viem's parseEventLogs to reliably decode the UID.
 
-export function extractAttestationUids(logs: Array<{ topics: Hex[]; data: Hex }>): Hex[] {
-  const uids: Hex[] = [];
-  for (const log of logs) {
-    if (log.topics[0] === ATTESTED_EVENT_SIG) {
-      // The UID is the third topic (topics[3] = indexed schema UID, but
-      // actually: topics[1] = recipient, topics[2] = attester, topics[3] = schema
-      // The UID is in the data field for non-indexed params
-      // Actually, in EAS: event Attested(address indexed recipient, address indexed attester, bytes32 uid, bytes32 indexed schemaUid)
-      // So uid is NOT indexed — it's in the data
-      const uid = log.data.slice(0, 66) as Hex; // first 32 bytes of data
-      uids.push(uid);
-    }
-  }
-  return uids;
+import { parseEventLogs } from "viem";
+
+export function extractAttestationUids(logs: Array<{ topics: Hex[]; data: Hex; address?: string }>): Hex[] {
+  const parsed = parseEventLogs({
+    abi: EAS_ABI,
+    eventName: "Attested",
+    logs: logs as Parameters<typeof parseEventLogs>[0]["logs"],
+  });
+  return parsed.map((log) => (log.args as { uid: Hex }).uid);
 }
 
 // ============================================
