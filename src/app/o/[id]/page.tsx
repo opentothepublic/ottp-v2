@@ -212,16 +212,50 @@ export default function ObjectPage() {
         </section>
       )}
 
-      {/* Child Objects (Scopes under a Project, etc.) */}
-      {children.length > 0 && (
+      {/* Scopes */}
+      {children.filter((c) => getIdentity(c) === IDENTITY.SCOPE).length > 0 && (
         <section className="mb-8">
-          <h2 className="text-sm font-medium text-zinc-400 mb-3">
-            Scopes & Children
-          </h2>
+          <h2 className="text-sm font-medium text-zinc-400 mb-3">Scopes</h2>
           <div className="grid gap-3 sm:grid-cols-2">
-            {children.map((child) => (
-              <ObjectCard key={child.id} object={child} />
-            ))}
+            {children
+              .filter((c) => getIdentity(c) === IDENTITY.SCOPE)
+              .map((child) => (
+                <ObjectCard key={child.id} object={child} />
+              ))}
+          </div>
+        </section>
+      )}
+
+      {/* Child Work */}
+      {children.filter((c) => getIdentity(c) === IDENTITY.WORK).length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-sm font-medium text-zinc-400 mb-3">Work</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {children
+              .filter((c) => getIdentity(c) === IDENTITY.WORK)
+              .map((child) => (
+                <ObjectCard key={child.id} object={child} />
+              ))}
+          </div>
+        </section>
+      )}
+
+      {/* Other Children */}
+      {children.filter((c) => {
+        const ci = getIdentity(c);
+        return ci !== IDENTITY.SCOPE && ci !== IDENTITY.WORK;
+      }).length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-sm font-medium text-zinc-400 mb-3">Children</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {children
+              .filter((c) => {
+                const ci = getIdentity(c);
+                return ci !== IDENTITY.SCOPE && ci !== IDENTITY.WORK;
+              })
+              .map((child) => (
+                <ObjectCard key={child.id} object={child} />
+              ))}
           </div>
         </section>
       )}
