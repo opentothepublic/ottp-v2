@@ -49,6 +49,7 @@ export default function ObjectPage() {
   const [linkSources, setLinkSources] = useState<
     Record<string, { object?: OttpObjectWithOwner; subject?: Subject }>
   >({});
+  const [ancestors, setAncestors] = useState<OttpObjectWithOwner[]>([]);
   const [loading, setLoading] = useState(true);
 
   const isOwner = subject && object && subject.id === object.owner_subject_id;
@@ -68,6 +69,17 @@ export default function ObjectPage() {
       if (obj) {
         const ch = await getChildObjects(obj.id);
         setChildren(ch);
+
+        // Resolve ancestor chain
+        const chain: OttpObjectWithOwner[] = [];
+        let currentParentId = obj.parent_object_id;
+        while (currentParentId) {
+          const parent = await getObjectById(currentParentId);
+          if (!parent) break;
+          chain.unshift(parent);
+          currentParentId = parent.parent_object_id;
+        }
+        setAncestors(chain);
       }
 
       // Resolve link sources
@@ -116,8 +128,37 @@ export default function ObjectPage() {
     );
   }
 
+  const backHref = object.parent_object_id
+    ? `/o/${object.parent_object_id}`
+    : "/";
+
   return (
     <div>
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-1.5 text-xs text-zinc-500 mb-3">
+        <Link href="/" className="hover:text-zinc-300">
+          Dashboard
+        </Link>
+        {ancestors.map((a) => (
+          <span key={a.id} className="flex items-center gap-1.5">
+            <span>&gt;</span>
+            <Link href={`/o/${a.id}`} className="hover:text-zinc-300">
+              {getTitle(a)}
+            </Link>
+          </span>
+        ))}
+        <span>&gt;</span>
+        <span className="text-zinc-400">{getTitle(object)}</span>
+      </nav>
+
+      {/* Back button */}
+      <Link
+        href={backHref}
+        className="inline-flex items-center gap-1 text-sm text-zinc-500 hover:text-zinc-300 mb-4"
+      >
+        &larr; Back
+      </Link>
+
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
@@ -264,7 +305,7 @@ export default function ObjectPage() {
       {inboundLinks.length > 0 && (
         <section>
           <h2 className="text-sm font-medium text-zinc-400 mb-3">
-            Linked Work
+            Linked Items
           </h2>
           <div className="space-y-2">
             {inboundLinks.map((link) => {

@@ -325,6 +325,15 @@ export async function rejectLink(
   return data;
 }
 
+export async function getLinkById(id: string): Promise<Link | null> {
+  const { data } = await supabase
+    .from("links")
+    .select("*")
+    .eq("id", id)
+    .single();
+  return data;
+}
+
 export async function getLinksToObject(objectId: string): Promise<Link[]> {
   const { data } = await supabase
     .from("links")
