@@ -21,6 +21,7 @@ import {
   encodeObjectData,
   encodeBlockData,
   encodeLinkData,
+  stripChainPrefix,
 } from "./encode";
 import { supabase } from "@/lib/supabase";
 import type { Subject, OttpObject, Block, Link } from "@/types/database";
@@ -218,7 +219,7 @@ export async function publishObject(
 
   // If the owner has an onchain UID, use it as refUID to create a chain
   const ownerRef = ownerOnchainUid
-    ? (ownerOnchainUid.split(":").pop() as Hex)
+    ? stripChainPrefix(ownerOnchainUid)
     : undefined;
 
   const hash = await createAttestation(
@@ -259,7 +260,7 @@ export async function publishLink(
 
   // If there's a target onchain UID, reference it
   const targetRef = targetOnchainUid
-    ? (targetOnchainUid.split(":").pop() as Hex)
+    ? stripChainPrefix(targetOnchainUid)
     : undefined;
 
   const hash = await createAttestation(

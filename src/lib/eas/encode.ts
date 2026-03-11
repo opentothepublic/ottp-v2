@@ -2,6 +2,13 @@ import { encodeAbiParameters, parseAbiParameters, type Hex } from "viem";
 import { ZERO_BYTES32 } from "./contracts";
 import type { Subject, OttpObject, Block, Link } from "@/types/database";
 
+/** Strip chain prefix (e.g. "base:0x...") and return the hex part. */
+export function stripChainPrefix(uid: string | null | undefined): Hex {
+  if (!uid) return ZERO_BYTES32;
+  const hex = uid.includes(":") ? uid.split(":").pop()! : uid;
+  return hex as Hex;
+}
+
 // ============================================
 // ENCODE SUBJECT
 // ============================================
@@ -27,8 +34,8 @@ export function encodeObjectData(
       "bytes32 ownerSubject, bytes32 parentObject, string metadata"
     ),
     [
-      (ownerOnchainUid as `0x${string}`) || ZERO_BYTES32,
-      (parentOnchainUid as `0x${string}`) || ZERO_BYTES32,
+      stripChainPrefix(ownerOnchainUid),
+      stripChainPrefix(parentOnchainUid),
       JSON.stringify(object.metadata),
     ]
   );
@@ -66,8 +73,8 @@ export function encodeLinkData(
   return encodeAbiParameters(
     parseAbiParameters("bytes32 sourceUid, bytes32 targetUid, string metadata"),
     [
-      (sourceOnchainUid as `0x${string}`) || ZERO_BYTES32,
-      (targetOnchainUid as `0x${string}`) || ZERO_BYTES32,
+      stripChainPrefix(sourceOnchainUid),
+      stripChainPrefix(targetOnchainUid),
       JSON.stringify({
         ...link.metadata,
         status: link.status,
